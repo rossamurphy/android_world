@@ -114,11 +114,13 @@ async def get_auxiliaries(wait_to_stabilize: bool, app_android_env: AndroidEnv):
     state = app_android_env.get_state(wait_to_stabilize=wait_to_stabilize)
     return {"auxiliaries": state.auxiliaries}
 
+
 @app.get("/packages")
 async def get_packages(app_android_env: AndroidEnv):
     """Returns the list of installed packages on the Android environment."""
     packages = get_all_package_names(app_android_env.controller)
     return {"packages": packages}
+
 
 @app.post("/execute_action")
 async def execute_action(
@@ -131,11 +133,13 @@ async def execute_action(
 
 
 @suite_router.get("/task_list")
-async def suite_task_list(max_index: int, app_suite: AndroidSuite):
+async def suite_task_list(min_index: int, max_index: int, app_suite: AndroidSuite):
     """Returns a list of task keys from the current suite, up to max_index."""
     if max_index > len(app_suite) or max_index < 0:
-        return {"task_list": list(app_suite.keys())}
-    return {"task_list": list(app_suite.keys())[:max_index]}
+        max_index = len(app_suite)
+    if min_index > max_index or min_index < 0:
+        min_index = 0
+    return {"task_list": list(app_suite.keys())[min_index:max_index]}
 
 
 @suite_router.get("/task_length")
