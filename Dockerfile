@@ -18,7 +18,7 @@ ARG ARCH="x86_64"
 ARG TARGET="google_apis" 
 ARG API_LEVEL="33"
 ARG BUILD_TOOLS="33.0.0"
-ARG ANDROID_ARCH=${ANDROID_ARCH_DEFAULT}
+#ARG ANDROID_ARCH=${ANDROID_ARCH_DEFAULT}
 ARG ANDROID_API_LEVEL="android-${API_LEVEL}"
 ARG ANDROID_APIS="${TARGET};${ARCH}"
 ARG EMULATOR_PACKAGE="system-images;${ANDROID_API_LEVEL};${ANDROID_APIS}"
@@ -78,8 +78,8 @@ RUN apt-get update && \
 RUN ln -sf /usr/local/bin/python3.11 /usr/local/bin/python3 && \
     ln -sf /usr/local/bin/python3.11 /usr/local/bin/python
 
-# install pip
-RUN apt-get update && apt-get install python3-pip -y
+# install pip, socat and net-tools
+RUN apt-get update && apt-get install python3-pip socat iproute2 -y
 
 #====================================
 # Install uv
@@ -106,3 +106,8 @@ RUN uv pip install . --system
 # framework entry point
 #=======================
 ENTRYPOINT [ "./docker_setup/entrypoint.sh" ]
+
+# emulator adb port
+EXPOSE 5555
+# android world env server port
+EXPOSE 5000
