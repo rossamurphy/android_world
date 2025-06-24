@@ -308,6 +308,7 @@ def get_controller(
     console_port: int = 5554,
     adb_path: str = DEFAULT_ADB_PATH,
     grpc_port: int = 8554,
+    adb_install_timeout: float | None = None,
 ) -> AndroidWorldController:
   """Creates a controller by connecting to an existing Android environment."""
 
@@ -321,7 +322,7 @@ def get_controller(
               adb_port=console_port + 1,
               grpc_port=grpc_port,
           ),
-          adb_controller=config_classes.AdbControllerConfig(adb_path=adb_path),
+          adb_controller=config_classes.AdbControllerConfig(adb_path=adb_path, default_timeout=adb_install_timeout),
       ),
   )
   android_env_instance = loader.load(config)

@@ -30,6 +30,9 @@ from android_world.env import json_action
 import fastapi
 import pydantic
 import uvicorn
+import os
+
+DEFAULT_ADB_INSTALL_TIMEOUT = int(os.environ.get('ADB_INSTALL_TIMEOUT', '300'))
 
 
 class StateResponse(pydantic.BaseModel):
@@ -47,6 +50,7 @@ async def lifespan(fast_api_app: fastapi.FastAPI):
       emulator_setup=True,
       freeze_datetime=True,
       adb_path="/opt/android/platform-tools/adb",
+      adb_install_timeout=DEFAULT_ADB_INSTALL_TIMEOUT,
   )
   task_registry = aw_registry_module.TaskRegistry()
   aw_registry = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
