@@ -3,10 +3,13 @@ build:
 	docker image prune -f
 
 run:
-	docker run --rm -it --platform linux/amd64 -p 5001:5000 -p 6080:6080 android-emulator-amd:latest
+	docker run --privileged --rm -it --platform linux/amd64 -p 5001:5000 -p 6080:6080 android-emulator-amd:latest
 
 run-background:
 	docker run --rm -d --name android-emulator-amd -p 5001:5000 -p 6080:6080 android-emulator-amd:latest
+
+bash-container:
+	docker run --rm -it --platform linux/amd64 --privileged --entrypoint bash android-emulator-amd:latest
 
 stop:
 	docker stop android-emulator
