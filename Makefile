@@ -1,6 +1,6 @@
 build:
 	docker buildx build --platform linux/amd64 --load -t android-emulator-amd:latest .
-	docker image prune -f
+	# docker image prune -f
 
 run:
 	docker run --privileged --rm -it \
