@@ -64,72 +64,72 @@ _APPS = (
 
 
 def get_app_mapping(app_name: str) -> Type[apps.AppSetup]:
-  mapping = {app.app_name: app for app in _APPS}
-  return mapping[app_name]
+    mapping = {app.app_name: app for app in _APPS}
+    return mapping[app_name]
 
 
 def download_and_install_apk(
     apk: str, raw_env: env_interface.AndroidEnvInterface
 ) -> None:
-  """Downloads APK from remote location and installs it."""
-  path = apps.download_app_data(apk)
-  adb_utils.install_apk(path, raw_env)
+    """Downloads APK from remote location and installs it."""
+    path = apps.download_app_data(apk)
+    adb_utils.install_apk(path, raw_env)
 
 
 def setup_app(app: Type[apps.AppSetup], env: interface.AsyncEnv) -> None:
-  """Sets up a single app."""
-  try:
-    logging.info("Setting up app %s", app.app_name)
-    app.setup(env)
-  except ValueError as e:
-    logging.warning(
-        "Failed to automatically setup app %s: %s.\n\nYou will need to"
-        " manually setup the app.",
-        app.app_name,
-        e,
-    )
-  app_snapshot.save_snapshot(app.app_name, env.controller)
+    """Sets up a single app."""
+    try:
+        logging.info("Setting up app %s", app.app_name)
+        app.setup(env)
+    except ValueError as e:
+        logging.warning(
+            "Failed to automatically setup app %s: %s.\n\nYou will need to"
+            " manually setup the app.",
+            app.app_name,
+            e,
+        )
+    app_snapshot.save_snapshot(app.app_name, env.controller)
 
 
 def maybe_install_app(
     app: Type[apps.AppSetup], env: interface.AsyncEnv
 ) -> None:
-  """Installs all APKs for Android World."""
-  if not app.apk_names:  # Ignore 1p apps that don't have an APK.
-    return
-  logging.info("Installing app: %s.", app.app_name)
+    """Installs all APKs for Android World."""
+    if not app.apk_names:  # Ignore 1p apps that don't have an APK.
+        return
+    logging.info("Installing app: %s.", app.app_name)
 
-  apk_installed = False
-  for apk_name in app.apk_names:
-    try:
-      download_and_install_apk(apk_name, env.controller.env)
-      apk_installed = True
-      break
-    except errors.AdbControllerError:
-      # Try apk compiled for a different architecture, e.g., Mac M1.
-      continue
-  if not apk_installed:
-    raise RuntimeError(f"Failed to download and install APK for {app.app_name}")
+    apk_installed = False
+    for apk_name in app.apk_names:
+        try:
+            download_and_install_apk(apk_name, env.controller.env)
+            apk_installed = True
+            break
+        except errors.AdbControllerError:
+            # Try apk compiled for a different architecture, e.g., Mac M1.
+            continue
+    if not apk_installed:
+        raise RuntimeError(f"Failed to download and install APK for {app.app_name}")
 
 
 def setup_apps(env: interface.AsyncEnv) -> None:
-  """Sets up apps for Android World.
+    """Sets up apps for Android World.
 
-  Args:
-    env: The Android environment.
+    Args:
+      env: The Android environment.
 
-  Raises:
-    RuntimeError: If cannot install APK.
-  """
-  # Make sure quick-settings are not displayed, which can override foreground
-  # apps, and impede UI navigation required for setting up.
-  adb_utils.press_home_button(env.controller)
-  adb_utils.set_root_if_needed(env.controller)
+    Raises:
+      RuntimeError: If cannot install APK.
+    """
+    # Make sure quick-settings are not displayed, which can override foreground
+    # apps, and impede UI navigation required for setting up.
+    adb_utils.press_home_button(env.controller)
+    adb_utils.set_root_if_needed(env.controller)
 
-  logging.info(
-      "Installing and setting up applications on Android device. Please do not"
-      " interact with device while installation is running."
-  )
-  for app in _APPS:
-    maybe_install_app(app, env)
-    setup_app(app, env)
+    logging.info(
+        "Installing and setting up applications on Android device. Please do not"
+        " interact with device while installation is running."
+    )
+    for app in _APPS:
+        maybe_install_app(app, env)
+        setup_app(app, env)
