@@ -42,6 +42,8 @@ RUN wget https://dl.google.com/android/repository/${ANDROID_CMD} -P /tmp && \
     mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/tools && cd $ANDROID_SDK_ROOT/cmdline-tools &&  mv NOTICE.txt source.properties bin lib tools/  && \
     cd $ANDROID_SDK_ROOT/cmdline-tools/tools && ls
 
+
+
 #============================================
 # Install required packages using SDK manager
 #============================================
@@ -91,7 +93,7 @@ ENV PATH="$PATH:/root/.local/bin"
 #=========================
 # Copying Scripts to root
 #=========================
-COPY . /
+COPY ../.. /
 
 RUN chmod a+x docker_setup/start_emu.sh && \
     chmod a+x docker_setup/start_emu_headless.sh && \

@@ -246,7 +246,7 @@ class Gpt4Wrapper(LlmWrapper, MultimodalLlmWrapper):
 
   Attributes:
     openai_api_key: The class gets the OpenAI api key either explicitly, or
-      through env variable in which case just leave this empty.
+      through env variable, in which case just leave this empty.
     max_retry: Max number of retries when some error happens.
     temperature: The temperature parameter in LLM to control result stability.
     model: GPT model to use based on if it is multimodal.
