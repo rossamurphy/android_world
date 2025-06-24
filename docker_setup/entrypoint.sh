@@ -2,6 +2,7 @@
 
 # Start Emulator
 #============================================
+export EMULATOR_TIMEOUT=600
 ./docker_setup/start_emu_headless.sh && \
 adb root && \
 python3 -m server.android_server
