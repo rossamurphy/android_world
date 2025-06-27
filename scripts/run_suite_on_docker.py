@@ -57,7 +57,7 @@ class AndroidEnvClient:
         "Setting up Android environment using Docker - Initial setup may take"
         " 5-10 minutes. Please wait..."
     )
-    self.base_url = "http://localhost:5000"
+    self.base_url = "http://localhost:5001"
 
   def reset(self, go_home: bool) -> Response:
     """Resets the environment."""
