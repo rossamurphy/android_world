@@ -9,7 +9,8 @@ WORKDIR /
 # Install Dependenices
 #=============================
 SHELL ["/bin/bash", "-c"]
-RUN apt update && apt install -y curl sudo wget unzip bzip2 libdrm-dev libxkbcommon-dev libgbm-dev libasound-dev libnss3 libxcursor1 libpulse-dev libxshmfence-dev xauth xvfb x11vnc fluxbox wmctrl libdbus-glib-1-2 ffmpeg
+RUN apt update && apt install -y curl sudo wget unzip bzip2 libdrm-dev libxkbcommon-dev libgbm-dev libasound-dev libnss3 libxcursor1 libpulse-dev libxshmfence-dev xauth xvfb x11vnc fluxbox wmctrl libdbus-glib-1-2 ffmpeg libgl1-mesa-glx
+
 
 #==============================
 # Android SDK ARGS
@@ -116,11 +117,14 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Install your package without dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install . --system --no-deps
+    uv pip install . --system
 
 #=======================
 # framework entry point
 #=======================
+HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=10 \
+  CMD adb devices | grep -q "emulator-5554.*device" || exit 1
+
 ENTRYPOINT [ "./docker_setup/entrypoint.sh" ]
 
 # emulator adb port
