@@ -2,11 +2,11 @@
 
 FROM openjdk:18-jdk-slim
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 
 WORKDIR /
 #=============================
-# Install Dependencies
+# Install Dependenices
 #=============================
 SHELL ["/bin/bash", "-c"]
 RUN apt update && apt install -y curl sudo wget unzip bzip2 libdrm-dev libxkbcommon-dev libgbm-dev libasound-dev libnss3 libxcursor1 libpulse-dev libxshmfence-dev xauth xvfb x11vnc fluxbox wmctrl libdbus-glib-1-2 ffmpeg
