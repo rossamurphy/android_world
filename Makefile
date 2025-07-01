@@ -6,21 +6,21 @@ push:
 
 
 run:
-	docker run --privileged --name rossamurphy/android-world -it \
+	docker run --privileged --name rossamurphy/android-world:latest -it \
        --device /dev/kvm \
        android-world
 
 run-background:
 	docker run --privileged --rm -d \
-       --name rossamurphy/android-world \
+		--name rossamurphy/android-world:latest \
        --device /dev/kvm \
        android-world
 
 attach:
-	docker exec -it rossamurphy/android-world bash
+	docker exec -it rossamurphy/android-world:latest bash
 
 attach-fg:
-	docker exec -it rossamurphy/android-world bash
+	docker exec -it rossamurphy/android-world:latest bash
 
 
 bash-container:
