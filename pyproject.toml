@@ -41,11 +41,14 @@ dev = [
 ]
 
 [tool.setuptools]
-# Use find_packages to automatically include all subdirectories
-packages = {find = {where = ["."], include = ["android_world*"]}}
+# This tells setuptools that the package's root code
+# is located in the 'android_world' subdirectory.
+package-dir = {"" = "android_world"}
 
-[tool.setuptools.package-dir]
-android_world = "android_world"
+[tool.setuptools.packages.find]
+# This tells the discovery function to start its search
+# inside that same 'android_world' subdirectory.
+where = ["android_world"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
