@@ -43,7 +43,9 @@ function launch_emulator () {
   options="@${emulator_name} -no-window -no-snapshot -no-boot-anim -memory 2048 ${hw_accel_flag} -grpc 8554"
   if [[ "$OSTYPE" == *linux* ]]; then
     echo "${OSTYPE}: emulator ${options} -gpu off"
-    nohup emulator $options -gpu off &
+    # Run in the foreground for debugging. Removed 'nohup' and '&'
+    # Added -verbose for more detailed logs.
+    emulator $options -gpu off -verbose
   fi
   if [[ "$OSTYPE" == *darwin* ]] || [[ "$OSTYPE" == *macos* ]]; then
     echo "${OSTYPE}: emulator ${options} -gpu swiftshader_indirect"
