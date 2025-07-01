@@ -74,6 +74,12 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install system dependencies needed for your heavy packages
+RUN apt-get update && apt-get install -y \
+    python3-dev \
+    gcc \
+    g++
+
 # Create symlinks for python3.11
 RUN ln -sf /usr/local/bin/python3.11 /usr/local/bin/python3 && \
     ln -sf /usr/local/bin/python3.11 /usr/local/bin/python
@@ -100,7 +106,17 @@ RUN chmod a+x docker_setup/start_emu.sh && \
 #====================================
 # Install dependencies
 #====================================
-RUN uv pip install . --system
+# Install dependencies separately to cache them
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --system \
+    --find-links https://download.pytorch.org/whl/cpu \
+    grpcio==1.73.1 \
+    grpcio-tools==1.71.0 \
+    protobuf==5.29.5
+
+# Install your package without dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install . --system --no-deps
 
 #=======================
 # framework entry point
