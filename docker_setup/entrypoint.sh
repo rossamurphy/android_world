@@ -36,5 +36,5 @@ echo "Attempting to start socat and python server"
 socat tcp-listen:5555,bind=$ip,fork tcp:127.0.0.1:5555 &
 python3 -m server.android_server &
 
-echo "All services started. Container is running. You can now launch the benchmark."
+echo "All emulator services started. Wait for full launch the FastAPI app (and the accompanying set-up of the emulator that entails)."
 wait
