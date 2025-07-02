@@ -5,13 +5,19 @@ push:
 	docker push rossamurphy/android-world:latest
 
 run:
-	docker run --privileged --name android-world-container -it \
+	docker run --rm --privileged --name android-world-container -it \
 		--device /dev/kvm \
+		--network docker-android-network \
+		-p 5555:5555 \
+		-p 5001:5001 \
 		rossamurphy/android-world:latest
 
 run-background:
 	docker run --privileged --rm -d \
 		--name android-world-container \
+		--network docker-android-network \
+		-p 5555:5555 \
+		-p 5001:5001 \
 		--device /dev/kvm \
 		rossamurphy/android-world:latest
 
@@ -30,4 +36,7 @@ bash-container:
 stop:
 	docker stop android-world-container || true
 
-.PHONY: build run run-background bash-container attach attach-fg stop
+remove:
+	docker remove android-world-container || true
+
+.PHONY: build run run-background bash-container attach attach-fg stop remove

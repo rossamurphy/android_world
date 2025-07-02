@@ -29,9 +29,12 @@ if [ -z "$ip" ]; then
   ip="0.0.0.0"
 fi
 
+
+echo "Attempting to start socat and python server"
+
 # Start socat and the python server
 socat tcp-listen:5555,bind=$ip,fork tcp:127.0.0.1:5555 &
 python3 -m server.android_server &
 
-echo "All services started. Container is running."
+echo "All services started. Container is running. You can now launch the benchmark."
 wait
