@@ -17,7 +17,7 @@
 This server exposes endpoints to control an Android emulator, execute tasks,
 and manage task execution on AndroidWorld tasks.
 """
-
+import argparse
 import contextlib
 import typing
 from typing import Any
@@ -40,6 +40,10 @@ class StateResponse(pydantic.BaseModel):
     ui_elements: list[Any]
 
 
+# Global variable to store the ADB path
+ADB_PATH = "adb"
+
+
 @contextlib.asynccontextmanager
 async def lifespan(fast_api_app: fastapi.FastAPI):
     """Manages the lifecycle of the Android environment and task suite."""
@@ -47,8 +51,7 @@ async def lifespan(fast_api_app: fastapi.FastAPI):
         console_port=5554,
         emulator_setup=True,
         freeze_datetime=True,
-        # adb_path="/opt/android/platform-tools/adb",
-        adb_path="adb",
+        adb_path=ADB_PATH,  # Use the global ADB_PATH variable
     )
     task_registry = aw_registry_module.TaskRegistry()
     aw_registry = task_registry.get_registry(task_registry.ANDROID_WORLD_FAMILY)
@@ -255,5 +258,35 @@ async def health(app_android_env: AndroidEnv):
 app.include_router(suite_router)
 app.include_router(task_router)
 
+
+def parse_args():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="FastAPI server for managing Android environment"
+    )
+    parser.add_argument(
+        "--adb-path",
+        default="adb",
+        help="Path to the ADB executable (default: adb)",
+    )
+    parser.add_argument(
+        "--host",
+        default="0.0.0.0",
+        help="Host to bind the server to (default: 0.0.0.0)",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=5001,
+        help="Port to bind the server to (default: 5001)",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5001)
+    args = parse_args()
+
+    # Set the global ADB_PATH before the app starts
+    ADB_PATH = args.adb_path
+
+    uvicorn.run(app, host=args.host, port=args.port)
