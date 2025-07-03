@@ -1,0 +1,4 @@
+include android_world/task_evals/information_retrieval/proto/*.textproto
+include android_world/task_evals/information_retrieval/proto/*.proto
+recursive-include android_world/task_evals/information_retrieval/proto *.textproto
+recursive-include android_world/task_evals/information_retrieval/proto *.proto
