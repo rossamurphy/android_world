@@ -51,13 +51,8 @@ RUN yes Y | sdkmanager --verbose --no_https ${ANDROID_SDK_PACKAGES}
 #============================================
 # Create required emulator
 #============================================
-ARG EMULATOR_NAME="Pixel_6_API_33"
-ARG EMULATOR_DEVICE="pixel_6"
-ENV EMULATOR_NAME=$EMULATOR_NAME
-ENV DEVICE_NAME=$EMULATOR_DEVICE
-RUN echo "no" | avdmanager --verbose create avd --force --name "${EMULATOR_NAME}" --device "${EMULATOR_DEVICE}" --package "${EMULATOR_PACKAGE}" && \
-    echo "hw.display.multi=no" >> /root/.android/avd/${EMULATOR_NAME}.avd/config.ini
-
+ENV DEVICE_NAME="pixel_6"
+ENV EMULATOR_PACKAGE="system-images;android-33;google_apis;x86_64"
 
 #====================================
 # Install Python 3.11 from source
