@@ -73,10 +73,8 @@ _PROTOBUF_VERSION = '5.29.5'
 
 setuptools.setup(
     name='android_world',
-    package_data={
-        'android_world.task_evals.information_retrieval.proto': ['*.textproto', '*.proto'],
-    },
-    include_package_data=True,
+    version='0.1.0',  # Add version
+    package_data={'': ['proto/*.proto']},
     packages=setuptools.find_packages(),
     setup_requires=[f'grpcio-tools=={_GRPCIO_TOOLS_VERSION}'],
     install_requires=[

@@ -2,7 +2,7 @@
 # only. The non-docker implementation uses a requirements.txt file.
 
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "grpcio-tools==1.71.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -17,7 +17,8 @@ dependencies = [
     "dm_env==1.6",
     "fuzzywuzzy==0.18.0",
     "google-generativeai",
-    "grpcio-tools",
+    "google-ai-generativelanguage==0.6.15",
+    "grpcio-tools==1.71.0",
     "immutabledict==2.0.0",
     "IPython",
     "jsonschema==4.17.3",
@@ -25,6 +26,7 @@ dependencies = [
     "numpy>=1.26.3",
     "opencv-python-headless",
     "pandas>=2.1.4",
+    "protobuf==5.29.5",
     "pydub",
     "python-Levenshtein",
     "pytest",
@@ -39,16 +41,6 @@ dependencies = [
 dev = [
     "pytest",
 ]
-
-[tool.setuptools]
-# This tells setuptools that the package's root code
-# is located in the 'android_world' subdirectory.
-package-dir = {"" = "android_world"}
-
-[tool.setuptools.packages.find]
-# This tells the discovery function to start its search
-# inside that same 'android_world' subdirectory.
-where = ["android_world"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
