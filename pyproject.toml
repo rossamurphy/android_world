@@ -13,6 +13,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "absl-py==2.1.0",
+    "bitsandbytes",
     "android_env==1.2.3",
     "dm_env==1.6",
     "fuzzywuzzy==0.18.0",
