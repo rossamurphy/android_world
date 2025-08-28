@@ -21,7 +21,6 @@ It does the following:
   and basic automation.
 """
 
-import os
 from typing import Type
 
 from absl import logging
